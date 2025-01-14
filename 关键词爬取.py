@@ -79,11 +79,12 @@ def sava_data(note_data,note_num):
         f.close()
         exit()
 
-def get_note_info(note_id,note_num):
+def get_note_info(note_id,note_num,xsec_token):
     '''
     获取笔记的详细信息
     :param note_id: 笔记id
     :param note_num: 要爬取的笔记数量
+    :param xsec_token: 用于请求笔记详细信息
     '''
     note_url = 'https://edith.xiaohongshu.com/api/sns/web/v1/feed'
 
@@ -93,7 +94,8 @@ def get_note_info(note_id,note_num):
         "image_scenes": [
             "CRD_PRV_WEBP",
             "CRD_WM_WEBP"
-        ]
+        ],
+        "xsec_token":xsec_token
     }
 
     # 更新请求头，得到签名
@@ -161,10 +163,11 @@ def keyword_search(keyword,note_num):
 
         for note in notes:
             note_id = note['id']
+            xsec_token = note['xsec_token']
             if len(note_id) != 24:
                 continue
             # 获取笔记的详细信息
-            get_note_info(note_id,note_num)
+            get_note_info(note_id,note_num,xsec_token)
 
 
 def main(keyword:str = "北京",note_num:int = 5,user_cookie:str = ""):
